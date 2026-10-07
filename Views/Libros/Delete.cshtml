@@ -1,0 +1,29 @@
+@model Libro
+@{
+    ViewData["Title"] = "Eliminar libro";
+}
+
+<h1 class="h2 mb-3">Eliminar libro</h1>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar este libro? Dejará de aparecer en el catálogo (eliminación lógica).
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Titulo)</dt>
+    <dd class="col-sm-9">@Model.Titulo</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.ISBN)</dt>
+    <dd class="col-sm-9">@Model.ISBN</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NombreAutor)</dt>
+    <dd class="col-sm-9">@Model.NombreAutor</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Ejemplares)</dt>
+    <dd class="col-sm-9">@Model.Ejemplares</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.LibroId" method="post">
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

@@ -1,0 +1,77 @@
+@model IEnumerable<PrestamoReporte>
+@{
+    ViewData["Title"] = "Reporte de préstamos";
+    var desde = ViewData["Desde"] as string;
+    var hasta = ViewData["Hasta"] as string;
+
+    // El procedimiento devuelve una fila por libro; aquí se agrupan para mostrar un préstamo por fila.
+    var prestamos = Model.GroupBy(r => r.PrestamoId).ToList();
+}
+
+<h1 class="h2 mb-3">Reporte de préstamos</h1>
+
+<form asp-action="Reporte" method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-sm-4 col-md-3">
+        <label for="desde" class="form-label">Desde</label>
+        <input type="date" id="desde" name="desde" value="@desde" class="form-control" />
+    </div>
+    <div class="col-sm-4 col-md-3">
+        <label for="hasta" class="form-label">Hasta</label>
+        <input type="date" id="hasta" name="hasta" value="@hasta" class="form-control" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </div>
+</form>
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>N.° préstamo</th>
+            <th>Socio</th>
+            <th>Libros</th>
+            <th>Fecha de préstamo</th>
+            <th>Fecha límite</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prestamo in prestamos)
+        {
+            var cabecera = prestamo.First();
+            <tr>
+                <td>@cabecera.PrestamoId</td>
+                <td>@cabecera.Socio <span class="text-muted small">(@cabecera.DNI)</span></td>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var fila in prestamo)
+                        {
+                            <li>
+                                @fila.Libro
+                                @if (fila.FechaDevolucion.HasValue)
+                                {
+                                    <span class="badge bg-success">Devuelto @fila.FechaDevolucion.Value.ToString("dd/MM/yyyy")</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </td>
+                <td>@cabecera.FechaPrestamo.ToString("dd/MM/yyyy")</td>
+                <td>@cabecera.FechaLimite.ToString("dd/MM/yyyy")</td>
+                <td>@cabecera.Estado</td>
+            </tr>
+        }
+        @if (prestamos.Count == 0)
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">No hay préstamos en el rango de fechas seleccionado.</td>
+            </tr>
+        }
+    </tbody>
+</table>

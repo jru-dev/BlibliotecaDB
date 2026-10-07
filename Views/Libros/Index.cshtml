@@ -1,0 +1,45 @@
+@model IEnumerable<Libro>
+@{
+    ViewData["Title"] = "Libros";
+    var buscar = ViewData["Buscar"] as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h2 mb-0">Libros</h1>
+    <a asp-action="Create" class="btn btn-primary">Nuevo libro</a>
+</div>
+
+<form asp-action="Index" method="get" class="row g-2 mb-3">
+    <div class="col-sm-6 col-md-5">
+        <input type="text" name="buscar" value="@buscar" class="form-control" placeholder="Buscar por título..." />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Limpiar</a>
+    </div>
+</form>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>ISBN</th>
+            <th>Autor</th>
+            <th class="text-end">Ejemplares</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @* La misma vista parcial pinta cada fila, tanto en el listado completo como en los resultados de la búsqueda. *@
+        @foreach (var libro in Model)
+        {
+            <partial name="_LibroFila" model="libro" />
+        }
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">No se encontraron libros.</td>
+            </tr>
+        }
+    </tbody>
+</table>

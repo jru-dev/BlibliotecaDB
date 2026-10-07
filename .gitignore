@@ -1,0 +1,21 @@
+# Archivos compilados
+bin/
+obj/
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Publicación y paquetes
+publish/
+*.nupkg
+
+# Configuración local con datos sensibles
+appsettings.Development.json
+appsettings.Local.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

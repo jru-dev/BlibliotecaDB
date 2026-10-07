@@ -1,0 +1,24 @@
+@model Libro
+@{
+    ViewData["Title"] = "Editar libro";
+}
+
+<h1 class="h2 mb-3">Editar libro</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-route-id="@Model.LibroId" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LibroId" />
+
+            <partial name="_CamposLibro" model="Model" />
+
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
